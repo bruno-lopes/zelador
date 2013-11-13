@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Chame o Zelador</string>
+    <string name="action_settings">Settings</string>
+    <string name="registrarOcorrenciasButtonLabel">Registrar Ocorrência</string>
+    <string name="verSituacaoAtualButtonLabel">Ver Situação Atual</string>
+    <string name="zeladorImageDescription">Logotipo do Zelador</string>
+
+</resources>
