@@ -6,5 +6,18 @@
     <string name="registrarOcorrenciasButtonLabel">Registrar Ocorrência</string>
     <string name="verSituacaoAtualButtonLabel">Ver Situação Atual</string>
     <string name="zeladorImageDescription">Logotipo do Zelador</string>
+    <string name="title_activity_registro_ocorrencia">RegistroOcorrenciaActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string-array name="categoriasOcorrenciasStringArray">
+        <item >Problemas Hidráulicos</item>
+        <item >Problemas Elétricos</item>
+        <item >Problemas de Pavimento</item>
+    </string-array>
+        <string name="categoriasOcorrenciasLabel">Categoria da Ocorrência</string>
+        <string name="detalhamentoOcorrenciaLabel">Detalhamento</string>
+        <string name="nomeDenuncianteLabel">Nome</string>
+        <string name="gravidadeOcorrenciaLabel">Gravidade</string>
+        <string name="cancelarLabel">Cancelar</string>
+        <string name="registrarLabel">Registrar</string>
 
 </resources>

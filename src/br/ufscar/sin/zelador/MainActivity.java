@@ -1,15 +1,38 @@
 package br.ufscar.sin.zelador;
 
-import android.os.Bundle;
+import br.ufscar.sin.db.DBHandler;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
+	private Button mRegistrarOcorrenciasButton;
+	private Button mVerSituacaoAtualButton;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		DBHandler dbHandler = new DBHandler(this);
+		
 		setContentView(R.layout.activity_main);
+		
+		mRegistrarOcorrenciasButton = (Button) findViewById(R.id.registrarOcorrenciasButton);
+		mVerSituacaoAtualButton = (Button) findViewById(R.id.verSituacaoAtualButton);
+		
+		mRegistrarOcorrenciasButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent registarOcorrenciaIntent = new Intent(MainActivity.this, RegistroOcorrenciaActivity.class);
+				startActivity(registarOcorrenciaIntent);
+			}
+		});
 	}
 
 	@Override

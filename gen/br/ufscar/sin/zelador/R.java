@@ -8,6 +8,9 @@
 package br.ufscar.sin.zelador;
 
 public final class R {
+    public static final class array {
+        public static final int categoriasOcorrenciasStringArray=0x7f060000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -25,22 +28,45 @@ public final class R {
         public static final int zelador=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f080000;
-        public static final int action_settings=0x7f080004;
-        public static final int imageView1=0x7f080001;
-        public static final int registrarOcorrenciasButton=0x7f080002;
-        public static final int verSituacaoAtualButton=0x7f080003;
+        public static final int LinearLayout1=0x7f090000;
+        public static final int TextView01=0x7f090005;
+        public static final int TextView02=0x7f090007;
+        public static final int action_settings=0x7f09000f;
+        public static final int cancelarOcorrenciabutton=0x7f09000d;
+        public static final int categoriasDasOcorrenciasSpinner=0x7f090006;
+        public static final int detalhamentoEditText=0x7f090008;
+        public static final int gravidadeOcorrenciaTextView=0x7f09000b;
+        public static final int imageView1=0x7f090001;
+        public static final int nomeDenuncianteEditText=0x7f09000a;
+        public static final int nomeDenuncianteTextView=0x7f090009;
+        public static final int registrarOcorrenciaButton=0x7f09000e;
+        public static final int registrarOcorrenciasButton=0x7f090002;
+        public static final int scrollView1=0x7f090004;
+        public static final int seekBar1=0x7f09000c;
+        public static final int verSituacaoAtualButton=0x7f090003;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int activity_registro_ocorrencia=0x7f030001;
     }
     public static final class menu {
-        public static final int main=0x7f070000;
+        public static final int main=0x7f080000;
+        public static final int registro_ocorrencia=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int cancelarLabel=0x7f05000b;
+        public static final int categoriasOcorrenciasLabel=0x7f050007;
+        public static final int detalhamentoOcorrenciaLabel=0x7f050008;
+        public static final int gravidadeOcorrenciaLabel=0x7f05000a;
+        public static final int hello_world=0x7f050006;
+        public static final int nomeDenuncianteLabel=0x7f050009;
+        public static final int registrarLabel=0x7f05000c;
         public static final int registrarOcorrenciasButtonLabel=0x7f050002;
+        public static final int title_activity_registro_ocorrencia=0x7f050005;
+        public static final int verSituacaoAtualButtonLabel=0x7f050003;
+        public static final int zeladorImageDescription=0x7f050004;
     }
     public static final class style {
         /** 
@@ -64,10 +90,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
 }
