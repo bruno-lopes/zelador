@@ -8,16 +8,24 @@
     <string name="zeladorImageDescription">Logotipo do Zelador</string>
     <string name="title_activity_registro_ocorrencia">RegistroOcorrenciaActivity</string>
     <string name="hello_world">Hello world!</string>
+
     <string-array name="categoriasOcorrenciasStringArray">
-        <item >Problemas Hidráulicos</item>
-        <item >Problemas Elétricos</item>
-        <item >Problemas de Pavimento</item>
+        <item>Problemas Hidráulicos</item>
+        <item>Problemas Elétricos</item>
+        <item>Problemas de Pavimento</item>
     </string-array>
-        <string name="categoriasOcorrenciasLabel">Categoria da Ocorrência</string>
-        <string name="detalhamentoOcorrenciaLabel">Detalhamento</string>
-        <string name="nomeDenuncianteLabel">Nome</string>
-        <string name="gravidadeOcorrenciaLabel">Gravidade</string>
-        <string name="cancelarLabel">Cancelar</string>
-        <string name="registrarLabel">Registrar</string>
+
+    <string name="categoriasOcorrenciasLabel">Categoria da Ocorrência</string>
+    <string name="detalhamentoOcorrenciaLabel">Detalhamento</string>
+    <string name="nomeDenuncianteLabel">Nome</string>
+    <string name="gravidadeOcorrenciaLabel">Gravidade</string>
+    <string name="cancelarLabel">Cancelar</string>
+    <string name="registrarLabel">Registrar</string>
+    <string name="title_activity_registro_ocorrencia_sucesso">RegistroOcorrenciaSucessoActivity</string>
+    <string name="mensagemSucessoLabel">Sua ocorrência foi registrada com sucesso!</string>
+    <string name="complementoFotoLabel">Você pode complementar a ocorrência tirando uma foto. Ela aparecerá no lugar da foto do zelador. O zelador agradece!</string>
+    <string name="tirarFotoButtonLabel">Tirar Foto</string>
+    <string name="enviarFotoButtonLabel">Enviar</string>
+    <string name="voltarInicioButtonLabel">Início</string>
 
 </resources>

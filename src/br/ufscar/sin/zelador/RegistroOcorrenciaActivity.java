@@ -4,6 +4,7 @@ import br.ufscar.sin.db.DBHandler;
 import br.ufscar.sin.db.DBSingleton;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -55,6 +56,9 @@ public class RegistroOcorrenciaActivity extends Activity {
 				Integer gravidade = mGravidadeSeekBar.getProgress();
 				mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
 						gravidade);
+				
+				Intent registrarOcorrenciaIntent = new Intent(RegistroOcorrenciaActivity.this, RegistroOcorrenciaSucessoActivity.class);
+				startActivity(registrarOcorrenciaIntent);
 			}
 		});
 

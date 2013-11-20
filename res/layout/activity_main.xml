@@ -12,7 +12,7 @@
     tools:context=".MainActivity" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/fotoOcorrenciaImageView"
         android:layout_width="100dp"
         android:layout_height="149dp"
         android:contentDescription="@string/zeladorImageDescription"
