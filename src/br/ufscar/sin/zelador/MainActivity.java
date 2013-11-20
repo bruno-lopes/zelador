@@ -1,6 +1,7 @@
 package br.ufscar.sin.zelador;
 
 import br.ufscar.sin.db.DBHandler;
+import br.ufscar.sin.db.DBSingleton;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +18,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		DBHandler dbHandler = new DBHandler(this);
+		DBHandler dbHandler = DBSingleton.getDBHandler(this);
 		
 		setContentView(R.layout.activity_main);
 		

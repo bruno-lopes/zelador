@@ -1,15 +1,64 @@
 package br.ufscar.sin.zelador;
 
-import android.os.Bundle;
+import br.ufscar.sin.db.DBHandler;
+import br.ufscar.sin.db.DBSingleton;
 import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 
 public class RegistroOcorrenciaActivity extends Activity {
+
+	private Button mRegistrarOcorrenciaButton;
+	private Button mCancelarOcorrenciaButton;
+
+	private EditText mNomeEditText;
+	private EditText mDetalhamentoEditText;
+
+	private Spinner mCategoriaDasOcorrenciasSpinner;
+
+	private SeekBar mGravidadeSeekBar;
+	private DBHandler mDBHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registro_ocorrencia);
+
+		mDBHandler = DBSingleton.getDBHandler(RegistroOcorrenciaActivity.this);
+
+		mNomeEditText = (EditText) findViewById(R.id.nomeDenuncianteEditText);
+		mDetalhamentoEditText = (EditText) findViewById(R.id.detalhamentoEditText);
+
+		mCategoriaDasOcorrenciasSpinner = (Spinner) findViewById(R.id.categoriasDasOcorrenciasSpinner);
+
+		mGravidadeSeekBar = (SeekBar) findViewById(R.id.gravidadeSeekBar);
+
+		mRegistrarOcorrenciaButton = (Button) findViewById(R.id.registrarOcorrenciaButton);
+		mRegistrarOcorrenciaButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				ContentValues values = new ContentValues();
+				String categoria = mCategoriaDasOcorrenciasSpinner
+						.getSelectedItem().toString();
+				String detalhamento = mDetalhamentoEditText.getText()
+						.toString();
+				String nome = mNomeEditText.getText().toString();
+				Integer gravidade = mGravidadeSeekBar.getProgress();
+				mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
+						gravidade);
+			}
+		});
+
+		mCancelarOcorrenciaButton = (Button) findViewById(R.id.cancelarOcorrenciaButton);
 	}
 
 	@Override

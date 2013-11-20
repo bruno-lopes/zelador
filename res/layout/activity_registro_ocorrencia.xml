@@ -18,7 +18,7 @@
         tools:context=".RegistroOcorrenciaActivity" >
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/categoriaOcorrenciaTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/categoriasOcorrenciasLabel" />
@@ -30,7 +30,7 @@
             android:entries="@array/categoriasOcorrenciasStringArray" />
 
         <TextView
-            android:id="@+id/TextView02"
+            android:id="@+id/detalhamentoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/detalhamentoOcorrenciaLabel" />
@@ -68,16 +68,17 @@
             android:text="@string/gravidadeOcorrenciaLabel" />
 
         <SeekBar
-            android:id="@+id/seekBar1"
+            android:id="@+id/gravidadeSeekBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:max="10" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/cancelarOcorrenciabutton"
+                android:id="@+id/cancelarOcorrenciaButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancelarLabel" />
