@@ -1,5 +1,7 @@
 package br.ufscar.sin.zelador;
 
+import java.util.Calendar;
+
 import br.ufscar.sin.db.DBHandler;
 import br.ufscar.sin.db.DBSingleton;
 import android.app.Activity;
@@ -47,15 +49,18 @@ public class RegistroOcorrenciaActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				ContentValues values = new ContentValues();
 				String categoria = mCategoriaDasOcorrenciasSpinner
 						.getSelectedItem().toString();
 				String detalhamento = mDetalhamentoEditText.getText()
 						.toString();
 				String nome = mNomeEditText.getText().toString();
 				Integer gravidade = mGravidadeSeekBar.getProgress();
+				
+				Calendar data_hora = Calendar.getInstance();
+				String status = "Aberta";
+				
 				mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
-						gravidade);
+						gravidade, data_hora.getTime(), status);
 				
 				Intent registrarOcorrenciaIntent = new Intent(RegistroOcorrenciaActivity.this, RegistroOcorrenciaSucessoActivity.class);
 				startActivity(registrarOcorrenciaIntent);
