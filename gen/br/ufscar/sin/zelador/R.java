@@ -29,7 +29,7 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout1=0x7f090000;
-        public static final int action_settings=0x7f090014;
+        public static final int action_settings=0x7f090015;
         public static final int cancelarOcorrenciaButton=0x7f09000d;
         public static final int categoriaOcorrenciaTextView=0x7f090005;
         public static final int categoriasDasOcorrenciasSpinner=0x7f090006;
@@ -46,14 +46,17 @@ public final class R {
         public static final int registrarOcorrenciaButton=0x7f09000e;
         public static final int registrarOcorrenciasButton=0x7f090002;
         public static final int scrollView1=0x7f090004;
+        public static final int text=0x7f090014;
         public static final int tirarFotoButton=0x7f090012;
         public static final int verSituacaoAtualButton=0x7f090003;
         public static final int voltarInicioButton=0x7f090011;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_registro_ocorrencia=0x7f030001;
-        public static final int activity_registro_ocorrencia_sucesso=0x7f030002;
+        public static final int activity_lista_ocorrencia=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_registro_ocorrencia=0x7f030002;
+        public static final int activity_registro_ocorrencia_sucesso=0x7f030003;
+        public static final int list_item=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -75,6 +78,7 @@ public final class R {
         public static final int registrarLabel=0x7f05000c;
         public static final int registrarOcorrenciasButtonLabel=0x7f050002;
         public static final int tirarFotoButtonLabel=0x7f050010;
+        public static final int title_activity_lista_ocorrencia=0x7f050013;
         public static final int title_activity_registro_ocorrencia=0x7f050005;
         public static final int title_activity_registro_ocorrencia_sucesso=0x7f05000d;
         public static final int verSituacaoAtualButtonLabel=0x7f050003;

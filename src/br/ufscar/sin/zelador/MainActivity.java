@@ -33,6 +33,15 @@ public class MainActivity extends Activity {
 				startActivity(registarOcorrenciaIntent);
 			}
 		});
+		
+		mVerSituacaoAtualButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent listaOcorrenciaIntent = new Intent(MainActivity.this, ListaOcorrenciaActivity.class);
+				startActivity(listaOcorrenciaIntent);
+			}
+		});
 	}
 
 	@Override

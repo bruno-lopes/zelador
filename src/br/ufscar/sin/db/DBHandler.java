@@ -2,11 +2,15 @@ package br.ufscar.sin.db;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
 import android.util.Log;
 
 public class DBHandler {
@@ -21,6 +25,8 @@ public class DBHandler {
 	private Context context;
 	private SQLiteDatabase db;
 
+	private static HashMap<String, String> mProjection;
+	
 	public DBHandler(Context context) {
 		this.context = context;
 		OpenHelper openHelper = new OpenHelper(this.context);
@@ -46,6 +52,12 @@ public class DBHandler {
 		//longitude
 	}
 
+	public Cursor listaOcorrencias() {
+	        return db.rawQuery("SELECT categoria, detalhamento FROM " +
+	                TABELA_OCORRENCIA +
+	                " order by id DESC", null);
+	}
+	
 	private class OpenHelper extends SQLiteOpenHelper {
 
 		OpenHelper(Context context) {

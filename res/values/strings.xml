@@ -27,5 +27,6 @@
     <string name="tirarFotoButtonLabel">Tirar Foto</string>
     <string name="enviarFotoButtonLabel">Enviar</string>
     <string name="voltarInicioButtonLabel">Início</string>
+    <string name="title_activity_lista_ocorrencia">ListaOcorrenciaActivity</string>
 
 </resources>

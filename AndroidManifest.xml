@@ -30,6 +30,11 @@
             android:name="br.ufscar.sin.zelador.RegistroOcorrenciaSucessoActivity"
             android:label="@string/title_activity_registro_ocorrencia_sucesso" >
         </activity>
+        <activity
+            android:name="br.ufscar.sin.zelador.ListaOcorrenciaActivity"
+            android:label="@string/title_activity_lista_ocorrencia" >
+        </activity>
+        
     </application>
 
 </manifest>
