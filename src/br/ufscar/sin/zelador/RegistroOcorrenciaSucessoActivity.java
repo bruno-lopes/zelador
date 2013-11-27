@@ -8,9 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,11 +40,17 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	private Bitmap mImageBitmap;
 	private ImageView mImageView;
 	
+	private Location mLocation;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registro_ocorrencia_sucesso);
 		mImageView = (ImageView) findViewById(R.id.fotoOcorrenciaImageView);
+		if (mImageBitmap!=null){
+			mImageView.setImageBitmap(mImageBitmap);
+		}
+		
 		mVoltarInicioButton = (Button) findViewById(R.id.voltarInicioButton);
 		
 		mVoltarInicioButton.setOnClickListener(new OnClickListener() {
@@ -73,7 +83,34 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		
 		
 		mEnviarFotoButton = (Button) findViewById(R.id.enviarFotoButton);
+		LocationManager locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+
+		LocationListener locationListener = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				atualizaLocalizacao(location);
+			}
+
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+			}
+
+			public void onProviderEnabled(String provider) {
+			}
+
+			public void onProviderDisabled(String provider) {
+			}
+		};
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+				0, locationListener);
 	}
+
+	private void atualizaLocalizacao(Location location) {
+		mLocation = location;
+		Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),"Latitude: " + location.getLatitude()
+				+ " Longitude: " + location.getLongitude());
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
