@@ -52,6 +52,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	        // Restore value of members from saved state
 	        mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
 	        mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
+	        Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),"Latitude: " + mLocation.getLatitude() + " Longitude: " + mLocation.getLongitude());
 	    }
 
 		
@@ -95,6 +96,16 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		});
 
 		mEnviarFotoButton = (Button) findViewById(R.id.enviarFotoButton);
+		mEnviarFotoButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if (mImageBitmap==null){
+					Toast.makeText(RegistroOcorrenciaSucessoActivity.this, "Não é possível enviar a ocorrência sem tirar foto", Toast.LENGTH_LONG).show();
+					return;
+				}				
+			}
+		});
 		LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 

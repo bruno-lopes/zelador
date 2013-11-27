@@ -53,7 +53,7 @@ public class DBHandler {
 	}
 
 	public Cursor listaOcorrencias() {
-	        return db.rawQuery("SELECT categoria, detalhamento FROM " +
+	        return db.rawQuery("SELECT * FROM " +
 	                TABELA_OCORRENCIA +
 	                " order by id DESC", null);
 	}
