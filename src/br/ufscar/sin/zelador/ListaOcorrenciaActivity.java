@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 import br.ufscar.sin.db.DBHandler;
 import br.ufscar.sin.db.DBSingleton;
@@ -21,7 +21,6 @@ public class ListaOcorrenciaActivity extends ListActivity {
 	// private ArrayList<String> lista = new ArrayList<String>();
 	private List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
 	private ArrayAdapter<Ocorrencia> mAdapter;
-	// private ListView mlistaOcorrenciaListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +28,16 @@ public class ListaOcorrenciaActivity extends ListActivity {
 
 		DBHandler dbHandler = DBSingleton.getDBHandler(this);
 		setContentView(R.layout.activity_lista_ocorrencia);
-
-		// mlistaOcorrenciaListView = (ListView)
-		// findViewById(R.id.listaOcorrenciaListView);
-
 		Cursor c = dbHandler.listaOcorrencias();
 
 		if (c != null) {
 			if (c.moveToFirst()) {
 				do {
 					Ocorrencia ocorrencia = new Ocorrencia(c);
-					// String categoria = c.getString(0);
-					// String detalhamento = c.getString(1);
-					// lista.add(categoria + ", " + detalhamento);
-
 					listaOcorrencias.add(ocorrencia);
 				} while (c.moveToNext());
 			}
 		}
-
-		// setListAdapter(new ArrayAdapter<String>(this,
-		// android.R.layout.simple_list_item_1, lista));
 		mAdapter = new ArrayAdapter<Ocorrencia>(this,
 				android.R.layout.simple_list_item_1, listaOcorrencias);
 		setListAdapter(mAdapter);
@@ -60,15 +48,31 @@ public class ListaOcorrenciaActivity extends ListActivity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						Ocorrencia ocorrenciaSelecionada = mAdapter
+								.getItem(position);
 
 						Toast.makeText(
 								ListaOcorrenciaActivity.this,
-								String.valueOf(mAdapter.getItem(position)
-										.toString() + " id: " + mAdapter.getItem(position).getId()), Toast.LENGTH_SHORT)
-								.show();
+								String.valueOf(ocorrenciaSelecionada.toString()
+										+ " id: "
+										+ ocorrenciaSelecionada.getId()),
+								Toast.LENGTH_SHORT).show();
+
+						if (ocorrenciaSelecionada.getStatus().equals("Criada")) {
+							Intent intentRegistroOcorrenciaSucesso = new Intent(
+									ListaOcorrenciaActivity.this,
+									RegistroOcorrenciaSucessoActivity.class);
+							intentRegistroOcorrenciaSucesso
+									.putExtra(
+											RegistroOcorrenciaSucessoActivity.PARAMETRO_ID_OCORRENCIA,
+											ocorrenciaSelecionada.getId());
+							startActivity(intentRegistroOcorrenciaSucesso);
+						} else if (ocorrenciaSelecionada.getStatus().equals(
+								"Enviada")) {
+
+						}
 					}
 				});
-
 	}
 
 	@Override
@@ -77,10 +81,4 @@ public class ListaOcorrenciaActivity extends ListActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-	// @Override
-	// public void onListItemClick(ListView l, View v, int position, long id) {
-	// // Do something when a list item is clicked
-	// }
-
 }

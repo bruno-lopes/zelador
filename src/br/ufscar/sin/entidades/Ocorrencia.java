@@ -17,6 +17,7 @@ public class Ocorrencia {
 	private Date dataHora;
 	private Location localizacao;
 	private ImageView fotografia;
+	private String status;
 
 	public Ocorrencia() {
 	}
@@ -32,6 +33,7 @@ public class Ocorrencia {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+         status = c.getString(6);
         id = c.getLong(c.getColumnIndex("id"));
 	}
 	
@@ -95,6 +97,14 @@ public class Ocorrencia {
 		this.fotografia = fotografia;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
     public String toString() {
         return categoria + ", ---  " + detalhamento;

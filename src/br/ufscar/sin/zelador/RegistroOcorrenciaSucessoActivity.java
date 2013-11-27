@@ -26,22 +26,30 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import br.ufscar.rest.Consulta;
 
 public class RegistroOcorrenciaSucessoActivity extends Activity {
-
+	
+	
+	
+	
 	private Button mVoltarInicioButton;
 	private Button mTirarFotoButton;
 	private Button mEnviarFotoButton;
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	
+
 	private static final String ESTADO_FOTO = "Fotografia";
 	private static final String ESTADO_LOCALIZACAO = "Localizacao";
+	private static final String ESTADO_OCORRENCIA_ID = "OcorrenciaID";
+	
+	public static final String PARAMETRO_ID_OCORRENCIA = "Id da Ocorrencias";
 
 	private String nomeArquivoFoto;
 	private Bitmap mImageBitmap;
 	private ImageView mImageView;
+	private Long mOcorrenciaId;
 
 	private Location mLocation;
 
@@ -49,15 +57,23 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {
-	        // Restore value of members from saved state
-	        mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
-	        mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
-	        Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),"Latitude: " + mLocation.getLatitude() + " Longitude: " + mLocation.getLongitude());
-	    }
+			mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
+			mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
+			if (mLocation!=null) {
+				Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
+						"Latitude: " + mLocation.getLatitude() + " Longitude: "
+								+ mLocation.getLongitude());
+			}
+//			mOcorrenciaId = savedInstanceState.getLong(ESTADO_OCORRENCIA_ID);
+//			if (mOcorrenciaId == null) {
+//				Toast.makeText(RegistroOcorrenciaSucessoActivity.this, "Ocorrencia não informada", Toast.LENGTH_LONG).show();
+//				Intent voltarInicioIntent = new Intent(
+//						RegistroOcorrenciaSucessoActivity.this,
+//						MainActivity.class);
+//				startActivity(voltarInicioIntent);
+//			}
+		}
 
-		
-		
-		
 		setContentView(R.layout.activity_registro_ocorrencia_sucesso);
 		mImageView = (ImageView) findViewById(R.id.fotoOcorrenciaImageView);
 		if (mImageBitmap != null) {
@@ -97,13 +113,17 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 		mEnviarFotoButton = (Button) findViewById(R.id.enviarFotoButton);
 		mEnviarFotoButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				if (mImageBitmap==null){
-					Toast.makeText(RegistroOcorrenciaSucessoActivity.this, "Não é possível enviar a ocorrência sem tirar foto", Toast.LENGTH_LONG).show();
-					return;
-				}				
+//				if (mImageBitmap == null) {
+//					Toast.makeText(
+//							RegistroOcorrenciaSucessoActivity.this,
+//							"Não é possível enviar a ocorrência sem tirar foto",
+//							Toast.LENGTH_LONG).show();
+//					return;
+//				}
+				new Consulta().execute("London,uk");
 			}
 		});
 		LocationManager locationManager = (LocationManager) this
@@ -197,7 +217,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 					}
 					mImageView.setImageBitmap(mImageBitmap);
 					Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-							"NÃ£o conseguiu abrir o arquivo!!");
+							"Nao conseguiu abrir o arquivo!!");
 
 				}
 			} else if (resultCode == RESULT_CANCELED) {
@@ -212,9 +232,25 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		// Save the user's current game state
 		savedInstanceState.putParcelable(ESTADO_FOTO, mImageBitmap);
 		savedInstanceState.putParcelable(ESTADO_LOCALIZACAO, mLocation);
-
+//		savedInstanceState.putLong(ESTADO_OCORRENCIA_ID, mOcorrenciaId);
 		// Always call the superclass so it can save the view hierarchy state
 		super.onSaveInstanceState(savedInstanceState);
 	}
+	
+	public void callWebService(String q){  
+//        HttpClient httpclient = new DefaultHttpClient();  
+//        HttpGet request = new HttpGet(URL + q);  
+//        request.addHeader("deviceId", deviceId);  
+//        ResponseHandler<String> handler = new BasicResponseHandler();  
+//        try {  
+//            result = httpclient.execute(request, handler);  
+//        } catch (ClientProtocolException e) {  
+//            e.printStackTrace();  
+//        } catch (IOException e) {  
+//            e.printStackTrace();  
+//        }  
+//        httpclient.getConnectionManager().shutdown();  
+//        Log.i(tag, result);  
+    } // end callWebService()
 
 }

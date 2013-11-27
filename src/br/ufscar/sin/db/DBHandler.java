@@ -33,17 +33,25 @@ public class DBHandler {
 		this.db = openHelper.getWritableDatabase();
 	}
 	
-	public void inserirOcorrencia(String categoria, String detalhamento, String nome, Integer gravidade, Date data_hora, String status) {
+	public Long inserirOcorrencia(String categoria, String detalhamento, String nome, Integer gravidade, Date data_hora, String status) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		db.execSQL("INSERT INTO " + TABELA_OCORRENCIA +
-				" (categoria, detalhamento, nome, gravidade, data_hora, status) VALUES (" +
-				"'" + categoria + "'," +
-				"'" + detalhamento + "'," +
-				"'" + nome + "'," +
-				gravidade + ", '" +
-				simpleDateFormat.format(data_hora) + "', '" +
-				status + "');");
+//		db.execSQL("INSERT INTO " + TABELA_OCORRENCIA +
+//				" (categoria, detalhamento, nome, gravidade, data_hora, status) VALUES (" +
+//				"'" + categoria + "'," +
+//				"'" + detalhamento + "'," +
+//				"'" + nome + "'," +
+//				gravidade + ", '" +
+//				simpleDateFormat.format(data_hora) + "', '" +
+//				status + "');");
 		
+		ContentValues conteudo = new ContentValues();
+		conteudo.put("categoria", categoria);
+		conteudo.put("detalhamento", detalhamento);
+		conteudo.put("nome", nome);
+		conteudo.put("gravidade", gravidade);
+		conteudo.put("data_hora", simpleDateFormat.format(data_hora));
+		conteudo.put("status", status);
+		return db.insert(TABELA_OCORRENCIA, null, conteudo);
 		//data
 		//hora
 		//status

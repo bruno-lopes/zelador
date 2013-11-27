@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class RegistroOcorrenciaActivity extends Activity {
 
@@ -57,12 +58,18 @@ public class RegistroOcorrenciaActivity extends Activity {
 				Integer gravidade = mGravidadeSeekBar.getProgress();
 				
 				Calendar data_hora = Calendar.getInstance();
-				String status = "Aberta";
+				String status = "Criada";
 				
-				mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
+				Long ocorrenciaId = mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
 						gravidade, data_hora.getTime(), status);
 				
+				if (ocorrenciaId==-1){
+					Toast.makeText(RegistroOcorrenciaActivity.this, "Não foi possível inserir a ocorrência no banco de dados", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				Intent registrarOcorrenciaIntent = new Intent(RegistroOcorrenciaActivity.this, RegistroOcorrenciaSucessoActivity.class);
+				registrarOcorrenciaIntent.putExtra(RegistroOcorrenciaSucessoActivity.PARAMETRO_ID_OCORRENCIA, ocorrenciaId);
 				startActivity(registrarOcorrenciaIntent);
 			}
 		});
