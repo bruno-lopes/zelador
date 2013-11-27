@@ -32,38 +32,52 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	private Button mVoltarInicioButton;
 	private Button mTirarFotoButton;
 	private Button mEnviarFotoButton;
-	
+
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	
+	private static final String ESTADO_FOTO = "Fotografia";
+	private static final String ESTADO_LOCALIZACAO = "Localizacao";
 
 	private String nomeArquivoFoto;
 	private Bitmap mImageBitmap;
 	private ImageView mImageView;
-	
+
 	private Location mLocation;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+	        // Restore value of members from saved state
+	        mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
+	        mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
+	    }
+
+		
+		
+		
 		setContentView(R.layout.activity_registro_ocorrencia_sucesso);
 		mImageView = (ImageView) findViewById(R.id.fotoOcorrenciaImageView);
-		if (mImageBitmap!=null){
+		if (mImageBitmap != null) {
 			mImageView.setImageBitmap(mImageBitmap);
 		}
-		
+
 		mVoltarInicioButton = (Button) findViewById(R.id.voltarInicioButton);
-		
+
 		mVoltarInicioButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent voltarInicioIntent = new Intent(RegistroOcorrenciaSucessoActivity.this, MainActivity.class);
+				Intent voltarInicioIntent = new Intent(
+						RegistroOcorrenciaSucessoActivity.this,
+						MainActivity.class);
 				startActivity(voltarInicioIntent);
 			}
-		});		
-		
+		});
+
 		mTirarFotoButton = (Button) findViewById(R.id.tirarFotoButton);
-		
+
 		mTirarFotoButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -80,8 +94,6 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			}
 		});
 
-		
-		
 		mEnviarFotoButton = (Button) findViewById(R.id.enviarFotoButton);
 		LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -107,10 +119,10 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 	private void atualizaLocalizacao(Location location) {
 		mLocation = location;
-		Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),"Latitude: " + location.getLatitude()
-				+ " Longitude: " + location.getLongitude());
+		Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
+				"Latitude: " + location.getLatitude() + " Longitude: "
+						+ location.getLongitude());
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,8 +130,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		getMenuInflater().inflate(R.menu.registro_ocorrencia_sucesso, menu);
 		return true;
 	}
-	
-	
+
 	private Uri getOutputMediaFileUri(int type) {
 		return Uri.fromFile(getOutputMediaFile(type));
 	}
@@ -149,7 +160,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 		return mediaFile;
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -161,16 +172,16 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 					File file = new File(nomeArquivoFoto);
 
 					if (file.exists()) {
-						Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-								"Conseguiu abrir o arquivo!!");
+						Log.i(RegistroOcorrenciaSucessoActivity.class
+								.toString(), "Conseguiu abrir o arquivo!!");
 
 						InputStream is;
 						try {
 							is = new FileInputStream(file);
 							mImageBitmap = BitmapFactory.decodeStream(is);
 						} catch (FileNotFoundException e) {
-							Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-									e.getLocalizedMessage());
+							Log.i(RegistroOcorrenciaSucessoActivity.class
+									.toString(), e.getLocalizedMessage());
 						}
 					}
 					mImageView.setImageBitmap(mImageBitmap);
@@ -183,6 +194,16 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			}
 		}
 
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		// Save the user's current game state
+		savedInstanceState.putParcelable(ESTADO_FOTO, mImageBitmap);
+		savedInstanceState.putParcelable(ESTADO_LOCALIZACAO, mLocation);
+
+		// Always call the superclass so it can save the view hierarchy state
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 }
