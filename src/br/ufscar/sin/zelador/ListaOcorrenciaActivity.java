@@ -19,8 +19,9 @@ import br.ufscar.sin.entidades.Ocorrencia;
 public class ListaOcorrenciaActivity extends ListActivity {
 
 	// private ArrayList<String> lista = new ArrayList<String>();
-	private List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
-	private ArrayAdapter<Ocorrencia> mAdapter;
+	//private List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
+	private ArrayList<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
+	private OcorrenciaAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,10 @@ public class ListaOcorrenciaActivity extends ListActivity {
 				} while (c.moveToNext());
 			}
 		}
-		mAdapter = new ArrayAdapter<Ocorrencia>(this,
-				android.R.layout.simple_list_item_1, listaOcorrencias);
+		//mAdapter = new ArrayAdapter<Ocorrencia>(this,
+		//		android.R.layout.simple_list_item_1, listaOcorrencias);
+		mAdapter = new OcorrenciaAdapter(this, 0, listaOcorrencias);
+
 		setListAdapter(mAdapter);
 		getListView().setTextFilterEnabled(true);
 		getListView().setOnItemClickListener(

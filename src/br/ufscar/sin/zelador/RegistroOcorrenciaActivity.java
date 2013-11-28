@@ -58,13 +58,13 @@ public class RegistroOcorrenciaActivity extends Activity {
 				Integer gravidade = mGravidadeSeekBar.getProgress();
 				
 				Calendar data_hora = Calendar.getInstance();
-				String status = "Criada";
+				String status = "Aberta";
 				
 				Long ocorrenciaId = mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
 						gravidade, data_hora.getTime(), status);
 				
 				if (ocorrenciaId==-1){
-					Toast.makeText(RegistroOcorrenciaActivity.this, "Não foi possível inserir a ocorrência no banco de dados", Toast.LENGTH_LONG).show();
+					Toast.makeText(RegistroOcorrenciaActivity.this, "Nï¿½o foi possï¿½vel inserir a ocorrï¿½ncia no banco de dados", Toast.LENGTH_LONG).show();
 					return;
 				}
 				

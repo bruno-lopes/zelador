@@ -25,21 +25,29 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
-        public static final int zelador=0x7f020001;
+        public static final int status_atendimento=0x7f020001;
+        public static final int status_criada=0x7f020002;
+        public static final int status_enviada=0x7f020003;
+        public static final int status_nao_resolvida=0x7f020004;
+        public static final int status_resolvida=0x7f020005;
+        public static final int zelador=0x7f020006;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f090000;
-        public static final int action_settings=0x7f090015;
+        public static final int action_settings=0x7f090018;
         public static final int cancelarOcorrenciaButton=0x7f09000d;
         public static final int categoriaOcorrenciaTextView=0x7f090005;
         public static final int categoriasDasOcorrenciasSpinner=0x7f090006;
         public static final int complementoFotoTextView=0x7f090010;
         public static final int detalhamentoEditText=0x7f090008;
         public static final int detalhamentoTextView=0x7f090007;
+        public static final int display_categoria=0x7f090015;
+        public static final int display_detalhamento=0x7f090017;
         public static final int enviarFotoButton=0x7f090013;
         public static final int fotoOcorrenciaImageView=0x7f090001;
         public static final int gravidadeOcorrenciaTextView=0x7f09000b;
         public static final int gravidadeSeekBar=0x7f09000c;
+        public static final int image_status=0x7f090016;
         public static final int mensagemSucessoTextView=0x7f09000f;
         public static final int nomeDenuncianteEditText=0x7f09000a;
         public static final int nomeDenuncianteTextView=0x7f090009;
@@ -57,6 +65,7 @@ public final class R {
         public static final int activity_registro_ocorrencia=0x7f030002;
         public static final int activity_registro_ocorrencia_sucesso=0x7f030003;
         public static final int list_item=0x7f030004;
+        public static final int two_list_item=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f080000;
