@@ -70,9 +70,15 @@ public class ListaOcorrenciaActivity extends ListActivity {
 											RegistroOcorrenciaSucessoActivity.PARAMETRO_ID_OCORRENCIA,
 											ocorrenciaSelecionada.getId());
 							startActivity(intentRegistroOcorrenciaSucesso);
-						} else if (ocorrenciaSelecionada.getStatus().equals(
-								"Enviada")) {
-
+						} else {
+							Intent intentMostraOcorrencia = new Intent(
+									ListaOcorrenciaActivity.this,
+									MostraOcorrenciaActivity.class);
+							intentMostraOcorrencia
+									.putExtra(
+											MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
+											ocorrenciaSelecionada.getId());
+							startActivity(intentMostraOcorrencia);
 						}
 					}
 				});

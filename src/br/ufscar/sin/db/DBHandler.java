@@ -65,6 +65,12 @@ public class DBHandler {
 	                TABELA_OCORRENCIA +
 	                " order by id DESC", null);
 	}
+
+	public Cursor recuperaOcorrencia(Long id) {
+        return db.rawQuery("SELECT * FROM " +
+                TABELA_OCORRENCIA +
+                " WHERE id = " + id, null);
+    }
 	
 	private class OpenHelper extends SQLiteOpenHelper {
 
