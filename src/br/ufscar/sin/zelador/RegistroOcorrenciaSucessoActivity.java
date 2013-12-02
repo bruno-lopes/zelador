@@ -1,13 +1,27 @@
 package br.ufscar.sin.zelador;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +30,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,13 +41,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import br.ufscar.rest.Consulta;
+import br.ufscar.sin.entidades.Ocorrencia;
 
 public class RegistroOcorrenciaSucessoActivity extends Activity {
-	
-	
-	
-	
+
 	private Button mVoltarInicioButton;
 	private Button mTirarFotoButton;
 	private Button mEnviarFotoButton;
@@ -43,7 +55,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	private static final String ESTADO_FOTO = "Fotografia";
 	private static final String ESTADO_LOCALIZACAO = "Localizacao";
 	private static final String ESTADO_OCORRENCIA_ID = "OcorrenciaID";
-	
+
 	public static final String PARAMETRO_ID_OCORRENCIA = "Id da Ocorrencias";
 
 	private String nomeArquivoFoto;
@@ -59,19 +71,20 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		if (savedInstanceState != null) {
 			mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
 			mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
-			if (mLocation!=null) {
+			if (mLocation != null) {
 				Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
 						"Latitude: " + mLocation.getLatitude() + " Longitude: "
 								+ mLocation.getLongitude());
 			}
-//			mOcorrenciaId = savedInstanceState.getLong(ESTADO_OCORRENCIA_ID);
-//			if (mOcorrenciaId == null) {
-//				Toast.makeText(RegistroOcorrenciaSucessoActivity.this, "Ocorrencia não informada", Toast.LENGTH_LONG).show();
-//				Intent voltarInicioIntent = new Intent(
-//						RegistroOcorrenciaSucessoActivity.this,
-//						MainActivity.class);
-//				startActivity(voltarInicioIntent);
-//			}
+			// mOcorrenciaId = savedInstanceState.getLong(ESTADO_OCORRENCIA_ID);
+			// if (mOcorrenciaId == null) {
+			// Toast.makeText(RegistroOcorrenciaSucessoActivity.this,
+			// "Ocorrencia nï¿½o informada", Toast.LENGTH_LONG).show();
+			// Intent voltarInicioIntent = new Intent(
+			// RegistroOcorrenciaSucessoActivity.this,
+			// MainActivity.class);
+			// startActivity(voltarInicioIntent);
+			// }
 		}
 
 		setContentView(R.layout.activity_registro_ocorrencia_sucesso);
@@ -116,14 +129,17 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-//				if (mImageBitmap == null) {
-//					Toast.makeText(
-//							RegistroOcorrenciaSucessoActivity.this,
-//							"Não é possível enviar a ocorrência sem tirar foto",
-//							Toast.LENGTH_LONG).show();
-//					return;
-//				}
-				new Consulta().execute("London,uk");
+				// if (mImageBitmap == null) {
+				// Toast.makeText(
+				// RegistroOcorrenciaSucessoActivity.this,
+				// "Nï¿½o ï¿½ possï¿½vel enviar a ocorrï¿½ncia sem tirar foto",
+				// Toast.LENGTH_LONG).show();
+				// return;
+				// }
+				Consulta1 consulta = new Consulta1();
+				// consulta.execute("London,uk");
+				consulta.execute("json");
+
 			}
 		});
 		LocationManager locationManager = (LocationManager) this
@@ -232,25 +248,120 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		// Save the user's current game state
 		savedInstanceState.putParcelable(ESTADO_FOTO, mImageBitmap);
 		savedInstanceState.putParcelable(ESTADO_LOCALIZACAO, mLocation);
-//		savedInstanceState.putLong(ESTADO_OCORRENCIA_ID, mOcorrenciaId);
+		// savedInstanceState.putLong(ESTADO_OCORRENCIA_ID, mOcorrenciaId);
 		// Always call the superclass so it can save the view hierarchy state
 		super.onSaveInstanceState(savedInstanceState);
 	}
-	
-	public void callWebService(String q){  
-//        HttpClient httpclient = new DefaultHttpClient();  
-//        HttpGet request = new HttpGet(URL + q);  
-//        request.addHeader("deviceId", deviceId);  
-//        ResponseHandler<String> handler = new BasicResponseHandler();  
-//        try {  
-//            result = httpclient.execute(request, handler);  
-//        } catch (ClientProtocolException e) {  
-//            e.printStackTrace();  
-//        } catch (IOException e) {  
-//            e.printStackTrace();  
-//        }  
-//        httpclient.getConnectionManager().shutdown();  
-//        Log.i(tag, result);  
-    } // end callWebService()
+
+	private void imprimeOcorrencias(List<Ocorrencia> listaOcorrencias) {
+
+		// List<Ocorrencia> listaOcorrencias = consulta.getOcorrencias();
+		Log.i("tag", String.valueOf(listaOcorrencias.size()));
+		for (Ocorrencia ocorrencia : listaOcorrencias) {
+			Log.i("tag", ocorrencia.getCategoria());
+			Log.i("tag", ocorrencia.getDenunciante());
+		}
+
+	}
+
+	public class Consulta1 extends AsyncTask<String, Void, Boolean> {
+
+		List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
+
+		private ProgressDialog progressDialog;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog = new ProgressDialog(
+					RegistroOcorrenciaSucessoActivity.this);
+
+			progressDialog.setMessage("Aguarde...");
+			progressDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+
+			String linha = "";
+			Boolean erro = true;
+
+			// String URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+			// String URL =
+			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
+			String URL = "http://chameozelador.herokuapp.com/ocorrencia/index?format=";
+			String result = "";
+			String deviceId = "xxxxx";
+			final String tag = "Your Logcat tag: ";
+
+			if (params.length > 0)
+				try {
+					HttpClient client = new DefaultHttpClient();
+					HttpGet requisicao = new HttpGet();
+					requisicao.setHeader("Content-Type",
+							"text/plain; charset=utf-8");
+					requisicao.setURI(new URI(URL + params[0]));
+					HttpResponse resposta = client.execute(requisicao);
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(resposta.getEntity()
+									.getContent()));
+					StringBuffer sb = new StringBuffer("");
+
+					while ((linha = br.readLine()) != null) {
+						sb.append(linha);
+					}
+
+					br.close();
+					Log.i(tag, sb.toString());
+					setOcorrencias(sb.toString());
+					erro = false;
+
+				} catch (Exception e) {
+					Log.e(Consulta1.class.toString(),
+							"Erro no parsing do JSON!!!", e);
+					erro = true;
+				}
+
+			return erro;
+		}
+
+		private void setOcorrencias(String jsonString) {
+			try {
+				JSONArray listaOcorrenciasJSON = new JSONArray(jsonString);
+				JSONObject ocorrenciaJSON;
+
+				for (int i = 0; i < listaOcorrenciasJSON.length(); i++) {
+					ocorrenciaJSON = new JSONObject(
+							listaOcorrenciasJSON.getString(i));
+					Ocorrencia ocorrencia = new Ocorrencia();
+					ocorrencia.setCategoria(ocorrenciaJSON
+							.getString("categoria"));
+					ocorrencia.setDenunciante(ocorrenciaJSON
+							.getString("denunciante"));
+
+					listaOcorrencias.add(ocorrencia);
+					Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
+							"Adicionando ocorrencia");
+				}
+			} catch (JSONException e) {
+				Log.e(RegistroOcorrenciaSucessoActivity.class.toString(),
+						"Erro no parsing do JSON", e);
+			}
+
+		}
+
+		public List<Ocorrencia> getOcorrencias() {
+			return listaOcorrencias;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			progressDialog.dismiss();
+			RegistroOcorrenciaSucessoActivity.this
+					.imprimeOcorrencias(listaOcorrencias);
+		}
+
+	}
 
 }
