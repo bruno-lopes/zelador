@@ -58,7 +58,7 @@ public class DBHandler {
 	public void atualizarOcorrenciaPorId(ContentValues conteudo, Long id) {
 		String[] argumentos = new String[1];
 		argumentos[0] = id.toString();
-		db.update(TABELA_OCORRENCIA, conteudo, "WHERE id = ?", argumentos);
+		db.update(TABELA_OCORRENCIA, conteudo, "id = ?", argumentos);
 	}
 
 	public Cursor listaOcorrencias() {
@@ -84,7 +84,7 @@ public class DBHandler {
 			Log.i("", "Tabela de ocorrencias criada");
 		}
 
-		private void criarTabelaOcorrencias(SQLiteDatabase db) {
+		private void criarTabelaOcorrencias(SQLiteDatabase db) { 
 			db.execSQL("CREATE TABLE "
 					+ TABELA_OCORRENCIA
 					+ " (id INTEGER PRIMARY KEY AUTOINCREMENT, "

@@ -58,7 +58,7 @@ public class RegistroOcorrenciaActivity extends Activity {
 				Integer gravidade = mGravidadeSeekBar.getProgress();
 				
 				Calendar data_hora = Calendar.getInstance();
-				String status = "Aberta";
+				String status = "Criada";
 				
 				Long ocorrenciaId = mDBHandler.inserirOcorrencia(categoria, detalhamento, nome,
 						gravidade, data_hora.getTime(), status);

@@ -38,8 +38,8 @@ public class Ocorrencia {
 			e.printStackTrace();
 		}
          status = c.getString(6);
-         latitude = c.getDouble(7);
-         longitude = c.getDouble(8);
+         //latitude = c.getDouble(7);
+         //longitude = c.getDouble(8);
         id = c.getLong(c.getColumnIndex("id"));
 	}
 	

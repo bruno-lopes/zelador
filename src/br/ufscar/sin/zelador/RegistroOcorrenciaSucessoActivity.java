@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,13 +13,10 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -371,7 +367,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			Log.i(mTag, jsonString);
 			Log.i(mTag, "ADFFF");
 			try{
-				new JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
+//				new JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
 //				{
 //					"employees": [
 //					{ "firstName":"John" , "lastName":"Doe" },
@@ -379,7 +375,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 //					{ "firstName":"Peter" , "lastName":"Jones" }
 //					]
 //					}
-				//resposta = new JSONObject(jsonString);
+				resposta = new JSONObject(jsonString);
 			}
 			catch (JSONException e){
 				Log.e(mTag, e.getLocalizedMessage());
@@ -435,18 +431,21 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	}
 
 	void trataRespostaInsercao(JSONObject resposta) {
+		Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
 		if (resposta == null) {
-			Toast.makeText(mContext, "Não foi possível conectar ao servidor. Tente novamente.", Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, "Nao foi possivel conectar ao servidor. Tente novamente.", Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		JSONObject ocorrenciaJSON;
 		try {
-			ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
-			Long ocorrenciaIDServidor = ocorrenciaJSON.getLong("id");
+			Log.i(mTag, resposta.toString());
+//			ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
+			Long ocorrenciaIDServidor = resposta.getLong("id");
 			Log.i(mTag, ocorrenciaIDServidor.toString());
 			ContentValues contentValues = new ContentValues();
 			contentValues.put("id_servidor", ocorrenciaIDServidor);
+			contentValues.put("status", "Enviada");
 			DBSingleton.getDBHandler(mContext)
 			.atualizarOcorrenciaPorId(contentValues, mOcorrenciaId);
 			Toast.makeText(mContext, "Ocorrencia cadastrada com sucesso no servidor", Toast.LENGTH_LONG).show();
@@ -454,8 +453,12 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			startActivity(intentMain);
 			
 		} catch (JSONException e) {
+			Log.i(mTag,e.getLocalizedMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (Exception e ) {
+			Log.i(mTag,e.getLocalizedMessage());
 		}
 		
 		
