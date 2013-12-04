@@ -17,33 +17,32 @@ public class DBHandler {
 
 	private static final String DATABASE_NAME = "zelador1.db";
 	private static final int DATABASE_VERSION = 1;
-	
+
 	private static final String TABELA_OCORRENCIA = "ocorrencia";
-	private static final String TABELA_CATEGORIA= "categoria";
-	
-	
+	private static final String TABELA_CATEGORIA = "categoria";
+
 	private Context context;
 	private SQLiteDatabase db;
 
 	private static HashMap<String, String> mProjection;
-	
+
 	public DBHandler(Context context) {
 		this.context = context;
 		OpenHelper openHelper = new OpenHelper(this.context);
 		this.db = openHelper.getWritableDatabase();
 	}
-	
-	public Long inserirOcorrencia(String categoria, String detalhamento, String nome, Integer gravidade, Date data_hora, String status) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//		db.execSQL("INSERT INTO " + TABELA_OCORRENCIA +
-//				" (categoria, detalhamento, nome, gravidade, data_hora, status) VALUES (" +
-//				"'" + categoria + "'," +
-//				"'" + detalhamento + "'," +
-//				"'" + nome + "'," +
-//				gravidade + ", '" +
-//				simpleDateFormat.format(data_hora) + "', '" +
-//				status + "');");
-		
+
+	public Long inserirOcorrencia(String categoria, String detalhamento,
+			String nome, Integer gravidade, Date data_hora, String status/*
+																		 * ,
+																		 * Double
+																		 * latitude
+																		 * ,
+																		 * Double
+																		 * longitude
+																		 */) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"dd/MM/yyyy HH:mm:ss");
 		ContentValues conteudo = new ContentValues();
 		conteudo.put("categoria", categoria);
 		conteudo.put("detalhamento", detalhamento);
@@ -51,27 +50,27 @@ public class DBHandler {
 		conteudo.put("gravidade", gravidade);
 		conteudo.put("data_hora", simpleDateFormat.format(data_hora));
 		conteudo.put("status", status);
+		// conteudo.put("latitude", latitude);
+		// conteudo.put("longitude", longitude);
 		return db.insert(TABELA_OCORRENCIA, null, conteudo);
-		//data
-		//hora
-		//status
-		//foto
-		//latitude
-		//longitude
+	}
+	
+	public void atualizarOcorrenciaPorId(ContentValues conteudo, Long id) {
+		String[] argumentos = new String[1];
+		argumentos[0] = id.toString();
+		db.update(TABELA_OCORRENCIA, conteudo, "WHERE id = ?", argumentos);
 	}
 
 	public Cursor listaOcorrencias() {
-	        return db.rawQuery("SELECT * FROM " +
-	                TABELA_OCORRENCIA +
-	                " order by id DESC", null);
+		return db.rawQuery("SELECT * FROM " + TABELA_OCORRENCIA
+				+ " order by id DESC", null);
 	}
 
 	public Cursor recuperaOcorrencia(Long id) {
-        return db.rawQuery("SELECT * FROM " +
-                TABELA_OCORRENCIA +
-                " WHERE id = " + id, null);
-    }
-	
+		return db.rawQuery("SELECT * FROM " + TABELA_OCORRENCIA
+				+ " WHERE id = " + id, null);
+	}
+
 	private class OpenHelper extends SQLiteOpenHelper {
 
 		OpenHelper(Context context) {
@@ -80,28 +79,23 @@ public class DBHandler {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.i("","Criando tabela de ocorrencias");
+			Log.i("", "Criando tabela de ocorrencias");
 			criarTabelaOcorrencias(db);
-			Log.i("","Tabela de ocorrencias criada");
+			Log.i("", "Tabela de ocorrencias criada");
 		}
 
 		private void criarTabelaOcorrencias(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE " + TABELA_OCORRENCIA +
-					" (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-					"categoria TEXT, " +
-					"detalhamento TEXT, " +
-					"nome TEXT, " +
-					"gravidade INTEGER, " +
-					"data_hora TEXT, " + 
-					"status TEXT);");
+			db.execSQL("CREATE TABLE "
+					+ TABELA_OCORRENCIA
+					+ " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "categoria TEXT, detalhamento TEXT, "
+					+ "nome TEXT, gravidade INTEGER, "
+					+ "data_hora TEXT, status TEXT, latitude REAL, longitude REAL, fotografia BLOB, id_servidor INTEGER);");
 		}
-		
-		
-
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			
+
 		}
 	}
 }

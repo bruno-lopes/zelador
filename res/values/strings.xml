@@ -10,8 +10,8 @@
     <string name="hello_world">Hello world!</string>
 
     <string-array name="categoriasOcorrenciasStringArray">
-        <item>Problemas Hidráulicos</item>
-        <item>Problemas Elétricos</item>
+        <item>Problemas Hidraulicos</item>
+        <item>Problemas Eletricos</item>
         <item>Problemas de Pavimento</item>
     </string-array>
 

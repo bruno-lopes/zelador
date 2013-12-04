@@ -15,15 +15,23 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -41,6 +49,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import br.ufscar.sin.db.DBSingleton;
 import br.ufscar.sin.entidades.Ocorrencia;
 
 public class RegistroOcorrenciaSucessoActivity extends Activity {
@@ -63,28 +72,43 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	private ImageView mImageView;
 	private Long mOcorrenciaId;
 
+	private Context mContext;
+	private String mTag;
+
 	private Location mLocation;
+	private Double latitude;
+	private Double longitude;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext = RegistroOcorrenciaSucessoActivity.this;
+		mTag = RegistroOcorrenciaSucessoActivity.class.toString();
+
+		Intent intent = getIntent();
+
+		Bundle params = intent.getExtras();
+
+		if (params != null) {
+			mOcorrenciaId = params.getLong(PARAMETRO_ID_OCORRENCIA);
+		}
+
 		if (savedInstanceState != null) {
 			mImageBitmap = savedInstanceState.getParcelable(ESTADO_FOTO);
 			mLocation = savedInstanceState.getParcelable(ESTADO_LOCALIZACAO);
 			if (mLocation != null) {
-				Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-						"Latitude: " + mLocation.getLatitude() + " Longitude: "
-								+ mLocation.getLongitude());
+				Log.i(mTag, "Latitude: " + mLocation.getLatitude()
+						+ " Longitude: " + mLocation.getLongitude());
 			}
-			// mOcorrenciaId = savedInstanceState.getLong(ESTADO_OCORRENCIA_ID);
-			// if (mOcorrenciaId == null) {
-			// Toast.makeText(RegistroOcorrenciaSucessoActivity.this,
-			// "Ocorrencia n�o informada", Toast.LENGTH_LONG).show();
-			// Intent voltarInicioIntent = new Intent(
-			// RegistroOcorrenciaSucessoActivity.this,
-			// MainActivity.class);
-			// startActivity(voltarInicioIntent);
-			// }
+			mOcorrenciaId = savedInstanceState.getLong(ESTADO_OCORRENCIA_ID);
+			if (mOcorrenciaId == null) {
+				Toast.makeText(mContext, "Ocorrencia nao informada",
+						Toast.LENGTH_LONG).show();
+				Intent voltarInicioIntent = new Intent(mContext,
+						MainActivity.class);
+				startActivity(voltarInicioIntent);
+			}
 		}
 
 		setContentView(R.layout.activity_registro_ocorrencia_sucesso);
@@ -99,8 +123,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent voltarInicioIntent = new Intent(
-						RegistroOcorrenciaSucessoActivity.this,
+				Intent voltarInicioIntent = new Intent(mContext,
 						MainActivity.class);
 				startActivity(voltarInicioIntent);
 			}
@@ -131,14 +154,31 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			public void onClick(View arg0) {
 				// if (mImageBitmap == null) {
 				// Toast.makeText(
-				// RegistroOcorrenciaSucessoActivity.this,
+				// mContext,
 				// "N�o � poss�vel enviar a ocorr�ncia sem tirar foto",
 				// Toast.LENGTH_LONG).show();
 				// return;
 				// }
-				Consulta1 consulta = new Consulta1();
+
+				Log.i(mTag, "Valor do mOcorrenciaId: " + mOcorrenciaId);
+
+				Cursor c = DBSingleton.getDBHandler(mContext)
+						.recuperaOcorrencia(mOcorrenciaId);
+				Ocorrencia ocorrencia = null;
+				if (c != null) {
+					if (c.moveToFirst()) {
+						ocorrencia = new Ocorrencia(c);
+
+					}
+				}
+				Log.i(mTag, "Valor do ocorrencia: " + ocorrencia.toString());
+
 				// consulta.execute("London,uk");
-				consulta.execute("json");
+				JSONObject ocorrenciaJSON = new JSONObject(ocorrencia.toMap());
+				TarefaInsercaoOcorrencia consulta = new TarefaInsercaoOcorrencia(
+						ocorrenciaJSON);
+				// consulta.execute("json");
+				consulta.execute();
 
 			}
 		});
@@ -166,9 +206,8 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 	private void atualizaLocalizacao(Location location) {
 		mLocation = location;
-		Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-				"Latitude: " + location.getLatitude() + " Longitude: "
-						+ location.getLongitude());
+		Log.i(mTag, "Latitude: " + location.getLatitude() + " Longitude: "
+				+ location.getLongitude());
 	}
 
 	@Override
@@ -232,8 +271,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 						}
 					}
 					mImageView.setImageBitmap(mImageBitmap);
-					Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-							"Nao conseguiu abrir o arquivo!!");
+					Log.i(mTag, "Nao conseguiu abrir o arquivo!!");
 
 				}
 			} else if (resultCode == RESULT_CANCELED) {
@@ -245,10 +283,9 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-		// Save the user's current game state
 		savedInstanceState.putParcelable(ESTADO_FOTO, mImageBitmap);
 		savedInstanceState.putParcelable(ESTADO_LOCALIZACAO, mLocation);
-		// savedInstanceState.putLong(ESTADO_OCORRENCIA_ID, mOcorrenciaId);
+		savedInstanceState.putLong(ESTADO_OCORRENCIA_ID, mOcorrenciaId);
 		// Always call the superclass so it can save the view hierarchy state
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -264,17 +301,25 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 	}
 
-	public class Consulta1 extends AsyncTask<String, Void, Boolean> {
+	private class TarefaInsercaoOcorrencia extends
+			AsyncTask<String, Void, Boolean> {
 
 		List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
+
+		private JSONObject jsonObject;
+		
+		private JSONObject resposta;
+
+		public TarefaInsercaoOcorrencia(JSONObject jsonObject) {
+			this.jsonObject = jsonObject;
+		}
 
 		private ProgressDialog progressDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			progressDialog = new ProgressDialog(
-					RegistroOcorrenciaSucessoActivity.this);
+			progressDialog = new ProgressDialog(mContext);
 
 			progressDialog.setMessage("Aguarde...");
 			progressDialog.show();
@@ -282,48 +327,73 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-
 			String linha = "";
 			Boolean erro = true;
-
-			// String URL = "http://api.openweathermap.org/data/2.5/weather?q=";
-			// String URL =
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
-			String URL = "http://chameozelador.herokuapp.com/ocorrencia/index?format=";
-			String result = "";
-			String deviceId = "xxxxx";
+			String URL = "http://chameozelador.herokuapp.com/ocorrencia/inserir";
 			final String tag = "Your Logcat tag: ";
 
-			if (params.length > 0)
-				try {
-					HttpClient client = new DefaultHttpClient();
-					HttpGet requisicao = new HttpGet();
-					requisicao.setHeader("Content-Type",
-							"text/plain; charset=utf-8");
-					requisicao.setURI(new URI(URL + params[0]));
-					HttpResponse resposta = client.execute(requisicao);
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(resposta.getEntity()
-									.getContent()));
-					StringBuffer sb = new StringBuffer("");
+			// if (params.length > 0) {
+			try {
+				HttpClient client = new DefaultHttpClient();
+				HttpPost post = new HttpPost(URL);
+				StringEntity se = new StringEntity(jsonObject.toString());
+				se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
+						"application/json"));
+				post.setEntity(se);
+				HttpResponse resposta = client.execute(post);
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						resposta.getEntity().getContent()));
+				StringBuffer sb = new StringBuffer("");
 
-					while ((linha = br.readLine()) != null) {
-						sb.append(linha);
-					}
-
-					br.close();
-					Log.i(tag, sb.toString());
-					setOcorrencias(sb.toString());
-					erro = false;
-
-				} catch (Exception e) {
-					Log.e(Consulta1.class.toString(),
-							"Erro no parsing do JSON!!!", e);
-					erro = true;
+				while ((linha = br.readLine()) != null) {
+					sb.append(linha);
 				}
+
+				br.close();
+				Log.i(tag, sb.toString());
+				// setOcorrencias(sb.toString());
+				setResposta(sb.toString());
+				erro = false;
+
+			} catch (Exception e) {
+				Log.e(TarefaInsercaoOcorrencia.class.toString(),
+						"Erro no parsing do JSON!!!", e);
+				erro = true;
+			}
+			// }
 
 			return erro;
 		}
+		
+		private void setResposta(String jsonString) {
+			jsonString.replaceAll(" ", "");
+			Log.i(mTag, jsonString);
+			Log.i(mTag, "ADFFF");
+			try{
+				new JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
+//				{
+//					"employees": [
+//					{ "firstName":"John" , "lastName":"Doe" },
+//					{ "firstName":"Anna" , "lastName":"Smith" },
+//					{ "firstName":"Peter" , "lastName":"Jones" }
+//					]
+//					}
+				//resposta = new JSONObject(jsonString);
+			}
+			catch (JSONException e){
+				Log.e(mTag, e.getLocalizedMessage());
+				resposta = null;
+			}
+			
+		}
+		
+		
+
+		
+//		public JSONArray getResposta() {
+//			return resposta;
+//		}
 
 		private void setOcorrencias(String jsonString) {
 			try {
@@ -340,12 +410,10 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 							.getString("denunciante"));
 
 					listaOcorrencias.add(ocorrencia);
-					Log.i(RegistroOcorrenciaSucessoActivity.class.toString(),
-							"Adicionando ocorrencia");
+					Log.i(mTag, "Adicionando ocorrencia");
 				}
 			} catch (JSONException e) {
-				Log.e(RegistroOcorrenciaSucessoActivity.class.toString(),
-						"Erro no parsing do JSON", e);
+				Log.e(mTag, "Erro no parsing do JSON", e);
 			}
 
 		}
@@ -358,10 +426,40 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			progressDialog.dismiss();
-			RegistroOcorrenciaSucessoActivity.this
-					.imprimeOcorrencias(listaOcorrencias);
+//			 RegistroOcorrenciaSucessoActivity.this
+//			 .imprimeOcorrencias(listaOcorrencias);
+			 RegistroOcorrenciaSucessoActivity.this
+			 .trataRespostaInsercao(resposta);
 		}
 
+	}
+
+	void trataRespostaInsercao(JSONObject resposta) {
+		if (resposta == null) {
+			Toast.makeText(mContext, "Não foi possível conectar ao servidor. Tente novamente.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		JSONObject ocorrenciaJSON;
+		try {
+			ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
+			Long ocorrenciaIDServidor = ocorrenciaJSON.getLong("id");
+			Log.i(mTag, ocorrenciaIDServidor.toString());
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("id_servidor", ocorrenciaIDServidor);
+			DBSingleton.getDBHandler(mContext)
+			.atualizarOcorrenciaPorId(contentValues, mOcorrenciaId);
+			Toast.makeText(mContext, "Ocorrencia cadastrada com sucesso no servidor", Toast.LENGTH_LONG).show();
+			Intent intentMain = new Intent(mContext, MainActivity.class);
+			startActivity(intentMain);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 }

@@ -64,7 +64,7 @@ public class RegistroOcorrenciaActivity extends Activity {
 						gravidade, data_hora.getTime(), status);
 				
 				if (ocorrenciaId==-1){
-					Toast.makeText(RegistroOcorrenciaActivity.this, "N�o foi poss�vel inserir a ocorr�ncia no banco de dados", Toast.LENGTH_LONG).show();
+					Toast.makeText(RegistroOcorrenciaActivity.this, "Nao foi possivel inserir a ocorrencia no banco de dados", Toast.LENGTH_LONG).show();
 					return;
 				}
 				
