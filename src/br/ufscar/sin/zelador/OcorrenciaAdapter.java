@@ -1,8 +1,8 @@
 package br.ufscar.sin.zelador;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import br.ufscar.sin.entidades.Ocorrencia;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import br.ufscar.sin.entidades.Ocorrencia;
 
 public class OcorrenciaAdapter extends ArrayAdapter<Ocorrencia> {
     private Activity activity;
-    private ArrayList<Ocorrencia> listaOcorrencia;
+    private List<Ocorrencia> listaOcorrencia;
     private static LayoutInflater inflater = null;
 
-    public OcorrenciaAdapter (Activity activity, int textViewResourceId,ArrayList<Ocorrencia> _listaOcorrencia) {
+    public OcorrenciaAdapter (Activity activity, int textViewResourceId,List<Ocorrencia> _listaOcorrencia) {
         super(activity, textViewResourceId, _listaOcorrencia);
         try {
             this.activity = activity;

@@ -7,13 +7,13 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-    
-    
-     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.location" />
@@ -22,18 +22,15 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    
 
     <permission
         android:name="br.ufscar.sin.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="br.ufscar.sin.permission.MAPS_RECEIVE" />
-    
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
-    
-    
-    
 
     <application
         android:allowBackup="true"
@@ -65,6 +62,13 @@
             android:name="br.ufscar.sin.zelador.MostraOcorrenciaActivity"
             android:label="@string/title_activity_mostra_ocorrencia" >
         </activity>
+        <activity
+            android:name="br.ufscar.sin.zelador.MapaActivity"
+            android:label="@string/title_activity_mapa" >
+        </activity>
+        <meta-data
+    android:name="com.google.android.maps.v2.API_KEY"
+    android:value="AIzaSyBCK9zbzlW6uMcSznpTImqaykVWvqPMwE0"/>
         
     </application>
 

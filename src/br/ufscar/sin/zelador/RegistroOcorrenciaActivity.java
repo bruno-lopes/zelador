@@ -75,6 +75,15 @@ public class RegistroOcorrenciaActivity extends Activity {
 		});
 
 		mCancelarOcorrenciaButton = (Button) findViewById(R.id.cancelarOcorrenciaButton);
+		mCancelarOcorrenciaButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intentInicio = new Intent(RegistroOcorrenciaActivity.this, MapaActivity.class);
+				startActivity(intentInicio);
+				
+			}
+		});
 	}
 
 	@Override

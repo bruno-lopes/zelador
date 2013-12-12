@@ -55,10 +55,10 @@ public class DBHandler {
 		return db.insert(TABELA_OCORRENCIA, null, conteudo);
 	}
 	
-	public void atualizarOcorrenciaPorId(ContentValues conteudo, Long id) {
+	public int atualizarOcorrenciaPorId(ContentValues conteudo, Long id) {
 		String[] argumentos = new String[1];
 		argumentos[0] = id.toString();
-		db.update(TABELA_OCORRENCIA, conteudo, "id = ?", argumentos);
+		return db.update(TABELA_OCORRENCIA, conteudo, "id = ?", argumentos);
 	}
 
 	public Cursor listaOcorrencias() {

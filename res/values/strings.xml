@@ -29,5 +29,6 @@
     <string name="voltarInicioButtonLabel">Início</string>
     <string name="title_activity_lista_ocorrencia">ListaOcorrenciaActivity</string>
     <string name="title_activity_mostra_ocorrencia">MostraOcorrenciaActivity</string>
+    <string name="title_activity_mapa">MapaActivity</string>
 
 </resources>

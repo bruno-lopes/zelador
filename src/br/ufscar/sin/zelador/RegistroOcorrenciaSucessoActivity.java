@@ -1,6 +1,7 @@
 package br.ufscar.sin.zelador;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -74,7 +75,6 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	private Location mLocation;
 	private Double latitude;
 	private Double longitude;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,16 +148,38 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// if (mImageBitmap == null) {
-				// Toast.makeText(
-				// mContext,
-				// "N�o � poss�vel enviar a ocorr�ncia sem tirar foto",
-				// Toast.LENGTH_LONG).show();
-				// return;
-				// }
-
+				if (mImageBitmap == null) {
+					Toast.makeText(
+							mContext,
+							"Nao e possivel enviar a ocorrencia sem tirar foto",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				if (mLocation == null) {
+					Toast.makeText(
+							mContext,
+							"Nao e possivel enviar a ocorrencia sem informacoes de localizacao",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				
+				ContentValues content = new ContentValues();
+				content.put("latitude", mLocation.getLatitude());
+				content.put("longitude", mLocation.getLongitude());
+				
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+				byte[] fotografia = stream.toByteArray();
+				
+				
+				content.put("fotografia", fotografia);
 				Log.i(mTag, "Valor do mOcorrenciaId: " + mOcorrenciaId);
-
+				int resultadoAtualizacao = DBSingleton.getDBHandler(mContext)
+				.atualizarOcorrenciaPorId(content,mOcorrenciaId);
+				
+				
 				Cursor c = DBSingleton.getDBHandler(mContext)
 						.recuperaOcorrencia(mOcorrenciaId);
 				Ocorrencia ocorrencia = null;
@@ -303,7 +325,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
 
 		private JSONObject jsonObject;
-		
+
 		private JSONObject resposta;
 
 		public TarefaInsercaoOcorrencia(JSONObject jsonObject) {
@@ -361,35 +383,32 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 			return erro;
 		}
-		
+
 		private void setResposta(String jsonString) {
 			jsonString.replaceAll(" ", "");
 			Log.i(mTag, jsonString);
 			Log.i(mTag, "ADFFF");
-			try{
-//				new JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
-//				{
-//					"employees": [
-//					{ "firstName":"John" , "lastName":"Doe" },
-//					{ "firstName":"Anna" , "lastName":"Smith" },
-//					{ "firstName":"Peter" , "lastName":"Jones" }
-//					]
-//					}
+			try {
+				// new
+				// JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
+				// {
+				// "employees": [
+				// { "firstName":"John" , "lastName":"Doe" },
+				// { "firstName":"Anna" , "lastName":"Smith" },
+				// { "firstName":"Peter" , "lastName":"Jones" }
+				// ]
+				// }
 				resposta = new JSONObject(jsonString);
-			}
-			catch (JSONException e){
+			} catch (JSONException e) {
 				Log.e(mTag, e.getLocalizedMessage());
 				resposta = null;
 			}
-			
-		}
-		
-		
 
-		
-//		public JSONArray getResposta() {
-//			return resposta;
-//		}
+		}
+
+		// public JSONArray getResposta() {
+		// return resposta;
+		// }
 
 		private void setOcorrencias(String jsonString) {
 			try {
@@ -422,10 +441,10 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			progressDialog.dismiss();
-//			 RegistroOcorrenciaSucessoActivity.this
-//			 .imprimeOcorrencias(listaOcorrencias);
-			 RegistroOcorrenciaSucessoActivity.this
-			 .trataRespostaInsercao(resposta);
+			// RegistroOcorrenciaSucessoActivity.this
+			// .imprimeOcorrencias(listaOcorrencias);
+			RegistroOcorrenciaSucessoActivity.this
+					.trataRespostaInsercao(resposta);
 		}
 
 	}
@@ -433,36 +452,37 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	void trataRespostaInsercao(JSONObject resposta) {
 		Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
 		if (resposta == null) {
-			Toast.makeText(mContext, "Nao foi possivel conectar ao servidor. Tente novamente.", Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext,
+					"Nao foi possivel conectar ao servidor. Tente novamente.",
+					Toast.LENGTH_LONG).show();
 			return;
 		}
-		
+
 		JSONObject ocorrenciaJSON;
 		try {
 			Log.i(mTag, resposta.toString());
-//			ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
+			// ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
 			Long ocorrenciaIDServidor = resposta.getLong("id");
 			Log.i(mTag, ocorrenciaIDServidor.toString());
 			ContentValues contentValues = new ContentValues();
 			contentValues.put("id_servidor", ocorrenciaIDServidor);
 			contentValues.put("status", "Enviada");
-			DBSingleton.getDBHandler(mContext)
-			.atualizarOcorrenciaPorId(contentValues, mOcorrenciaId);
-			Toast.makeText(mContext, "Ocorrencia cadastrada com sucesso no servidor", Toast.LENGTH_LONG).show();
+			DBSingleton.getDBHandler(mContext).atualizarOcorrenciaPorId(
+					contentValues, mOcorrenciaId);
+			Toast.makeText(mContext,
+					"Ocorrencia cadastrada com sucesso no servidor",
+					Toast.LENGTH_LONG).show();
 			Intent intentMain = new Intent(mContext, MainActivity.class);
 			startActivity(intentMain);
-			
+
 		} catch (JSONException e) {
-			Log.i(mTag,e.getLocalizedMessage());
+			Log.i(mTag, e.getLocalizedMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			Log.i(mTag, e.getLocalizedMessage());
 		}
-		catch (Exception e ) {
-			Log.i(mTag,e.getLocalizedMessage());
-		}
-		
-		
-		
+
 	}
 
 }
