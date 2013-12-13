@@ -14,32 +14,46 @@ public class MainActivity extends Activity {
 
 	private Button mRegistrarOcorrenciasButton;
 	private Button mVerSituacaoAtualButton;
-	
+	private Button mListarMinhasOcorrenciasButton;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DBHandler dbHandler = DBSingleton.getDBHandler(this);
-		
+
 		setContentView(R.layout.activity_main);
-		
+
 		mRegistrarOcorrenciasButton = (Button) findViewById(R.id.registrarOcorrenciasButton);
 		mVerSituacaoAtualButton = (Button) findViewById(R.id.verSituacaoAtualButton);
-		
+		mListarMinhasOcorrenciasButton = (Button) findViewById(R.id.listaMinhasOcorrenciasButton);
+
 		mRegistrarOcorrenciasButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent registarOcorrenciaIntent = new Intent(MainActivity.this, RegistroOcorrenciaActivity.class);
+				Intent registarOcorrenciaIntent = new Intent(MainActivity.this,
+						RegistroOcorrenciaActivity.class);
 				startActivity(registarOcorrenciaIntent);
 			}
 		});
-		
+
 		mVerSituacaoAtualButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent listaOcorrenciaIntent = new Intent(MainActivity.this, ListaOcorrenciaActivity.class);
+				Intent listaOcorrenciaIntent = new Intent(MainActivity.this,
+						ListaOcorrenciaActivity.class);
 				startActivity(listaOcorrenciaIntent);
+			}
+		});
+
+		mListarMinhasOcorrenciasButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent listaMinhasOcorrenciasIntent = new Intent(MainActivity.this,
+						ListaMinhasOcorrenciasActivity.class);
+				startActivity(listaMinhasOcorrenciasIntent);
 			}
 		});
 	}

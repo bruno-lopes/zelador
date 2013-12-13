@@ -22,6 +22,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,43 +30,51 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import br.ufscar.sin.db.DBHandler;
+import br.ufscar.sin.db.DBSingleton;
 import br.ufscar.sin.entidades.Ocorrencia;
 
-public class ListaOcorrenciaActivity extends ListActivity {
+public class ListaMinhasOcorrenciasActivity extends ListActivity {
 
 	// private ArrayList<String> lista = new ArrayList<String>();
 	// private List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
 
-	private Context mContext = ListaOcorrenciaActivity.this;
+	private Context mContext = ListaMinhasOcorrenciasActivity.this;
 	private List<Ocorrencia> listaOcorrencias = new ArrayList<Ocorrencia>();
 	private OcorrenciaAdapter mAdapter;
-	private final String mTag = ListaOcorrenciaActivity.class.getName();
+	private final String mTag = ListaMinhasOcorrenciasActivity.class.getName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/*
-		 * DBHandler dbHandler = DBSingleton.getDBHandler(this);
-		 * setContentView(R.layout.activity_lista_ocorrencia); Cursor c =
-		 * dbHandler.listaOcorrencias();
-		 * 
-		 * if (c != null) { if (c.moveToFirst()) { do { Ocorrencia ocorrencia =
-		 * new Ocorrencia(c); listaOcorrencias.add(ocorrencia); } while
-		 * (c.moveToNext()); } }
-		 */
+		DBHandler dbHandler = DBSingleton.getDBHandler(this);
+		setContentView(R.layout.activity_lista_ocorrencia);
+		Cursor c = dbHandler.listaOcorrencias();
+//		List<Long> idOcorrencias = new ArrayList<Long>();
+		Map idOcorrencias = new HashMap<String, Long>();
+		if (c != null) {
+			int i = 1;
+			if (c.moveToFirst()) {
+				do {
+					Ocorrencia ocorrencia = new Ocorrencia(c);
+					idOcorrencias.put("id" + i,ocorrencia.getIdServidor());
+					i++;
+					//listaOcorrencias.add(ocorrencia);
+				} while (c.moveToNext());
+			}
+		}
 
 		// mAdapter = new ArrayAdapter<Ocorrencia>(this,
 		// android.R.layout.simple_list_item_1, listaOcorrencias);
-		
-		Map mapa = new HashMap<String, String>();
-		mapa.put("id", "1");
-		JSONObject ocorrenciaJSON = new JSONObject(mapa);
+
+//		Map mapa = new HashMap<String, String>();
+//		mapa.put("id", "1");
+		JSONObject ocorrenciaJSON = new JSONObject(idOcorrencias);
 		TarefaListarMinhasOcorrencias consulta = new TarefaListarMinhasOcorrencias(
 				ocorrenciaJSON);
 		// consulta.execute("json");
 		consulta.execute();
-		
 
 	}
 
@@ -108,8 +117,9 @@ public class ListaOcorrenciaActivity extends ListActivity {
 			String linha = "";
 			Boolean erro = true;
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
-//			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
-			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaOcorrencias";
+			// String URL =
+			// "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
+			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaSuasOcorrencias";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
@@ -130,9 +140,9 @@ public class ListaOcorrenciaActivity extends ListActivity {
 				}
 
 				br.close();
-//				Log.i(tag, sb.toString());
-				 setOcorrencias(sb.toString());
-//				setResposta(sb.toString());
+				// Log.i(tag, sb.toString());
+				setOcorrencias(sb.toString());
+				// setResposta(sb.toString());
 				erro = false;
 
 			} catch (Exception e) {
@@ -196,13 +206,14 @@ public class ListaOcorrenciaActivity extends ListActivity {
 			progressDialog.dismiss();
 			// RegistroOcorrenciaSucessoActivity.this
 			// .imprimeOcorrencias(listaOcorrencias);
-			ListaOcorrenciaActivity.this.trataRespostaInsercao(listaOcorrencias);
+			ListaMinhasOcorrenciasActivity.this
+					.trataRespostaInsercao(listaOcorrencias);
 		}
 
 	}
 
 	void trataRespostaInsercao(List<Ocorrencia> resposta) {
-//		Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
+		// Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
 		listaOcorrencias = resposta;
 		/*
 		 * if (resposta == null) { Toast.makeText(mContext,
@@ -240,7 +251,7 @@ public class ListaOcorrenciaActivity extends ListActivity {
 								.getItem(position);
 
 						Toast.makeText(
-								ListaOcorrenciaActivity.this,
+								ListaMinhasOcorrenciasActivity.this,
 								String.valueOf(ocorrenciaSelecionada.toString()
 										+ " id: "
 										+ ocorrenciaSelecionada.getId()),
@@ -248,7 +259,7 @@ public class ListaOcorrenciaActivity extends ListActivity {
 
 						if (ocorrenciaSelecionada.getStatus().equals("Criada")) {
 							Intent intentRegistroOcorrenciaSucesso = new Intent(
-									ListaOcorrenciaActivity.this,
+									ListaMinhasOcorrenciasActivity.this,
 									RegistroOcorrenciaSucessoActivity.class);
 							intentRegistroOcorrenciaSucesso
 									.putExtra(
@@ -257,16 +268,16 @@ public class ListaOcorrenciaActivity extends ListActivity {
 							startActivity(intentRegistroOcorrenciaSucesso);
 						} else {
 							Intent intentMostraOcorrencia = new Intent(
-									ListaOcorrenciaActivity.this,
+									ListaMinhasOcorrenciasActivity.this,
 									MostraOcorrenciaActivity.class);
-//							intentMostraOcorrencia
-//									.putExtra(
-//											MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
-//											ocorrenciaSelecionada.getId());
+							// intentMostraOcorrencia
+							// .putExtra(
+							// MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
+							// ocorrenciaSelecionada.getId());
 							intentMostraOcorrencia
-							.putExtra(
-									MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
-									ocorrenciaSelecionada);
+									.putExtra(
+											MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
+											ocorrenciaSelecionada);
 							startActivity(intentMostraOcorrencia);
 						}
 					}

@@ -23,6 +23,7 @@ public class Ocorrencia implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
+	private Long idServidor;
 	private String detalhamento;
 	private String denunciante;
 	private Integer gravidade;
@@ -52,6 +53,7 @@ public class Ocorrencia implements Serializable {
 		longitude = c.getDouble(8);
 		fotografia = c.getBlob(9);
 		id = c.getLong(c.getColumnIndex("id"));
+		idServidor = c.getLong(c.getColumnIndex("id_servidor"));
 	}
 
 	public Ocorrencia(JSONObject ocorrenciaJSON) {
@@ -92,6 +94,10 @@ public class Ocorrencia implements Serializable {
 	public Long getId() {
 		return id;
 	}
+	
+	public Long getIdServidor() {
+		return idServidor;
+	}
 
 	public String getDetalhamento() {
 		return detalhamento;
@@ -115,6 +121,10 @@ public class Ocorrencia implements Serializable {
 
 	public void setGravidade(Integer gravidade) {
 		this.gravidade = gravidade;
+	}
+	
+	public void setIdServidor(Long idServidor) {
+		this.idServidor = idServidor;
 	}
 
 	public String getCategoria() {

@@ -374,7 +374,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 				}
 
 				br.close();
-				Log.i(tag, sb.toString());
+//				Log.i(tag, sb.toString());
 				// setOcorrencias(sb.toString());
 				setResposta(sb.toString());
 				erro = false;
@@ -391,8 +391,6 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 		private void setResposta(String jsonString) {
 			jsonString.replaceAll(" ", "");
-			Log.i(mTag, jsonString);
-			Log.i(mTag, "ADFFF");
 			try {
 				// new
 				// JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
@@ -430,7 +428,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 							.getString("denunciante"));
 
 					listaOcorrencias.add(ocorrencia);
-					Log.i(mTag, "Adicionando ocorrencia");
+//					Log.i(mTag, "Adicionando ocorrencia");
 				}
 			} catch (JSONException e) {
 				Log.e(mTag, "Erro no parsing do JSON", e);
@@ -455,7 +453,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 	}
 
 	void trataRespostaInsercao(JSONObject resposta) {
-		Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
+//		Log.i(mTag, "PASSOU PELA TRATA REPOSTAS");
 		if (resposta == null) {
 			Toast.makeText(mContext,
 					"Nao foi possivel conectar ao servidor. Tente novamente.",
@@ -465,10 +463,10 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 		JSONObject ocorrenciaJSON;
 		try {
-			Log.i(mTag, resposta.toString());
+//			Log.i(mTag, resposta.toString());
 			// ocorrenciaJSON = resposta.getJSONObject("ocorrencia");
 			Long ocorrenciaIDServidor = resposta.getLong("id");
-			Log.i(mTag, ocorrenciaIDServidor.toString());
+//			Log.i(mTag, ocorrenciaIDServidor.toString());
 			ContentValues contentValues = new ContentValues();
 			contentValues.put("id_servidor", ocorrenciaIDServidor);
 			contentValues.put("status", "Enviada");
