@@ -109,7 +109,8 @@ public class ListaOcorrenciaActivity extends ListActivity {
 			Boolean erro = true;
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
 //			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
-			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaOcorrencias";
+//			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaOcorrencias";
+			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
@@ -239,12 +240,12 @@ public class ListaOcorrenciaActivity extends ListActivity {
 						Ocorrencia ocorrenciaSelecionada = mAdapter
 								.getItem(position);
 
-						Toast.makeText(
-								ListaOcorrenciaActivity.this,
-								String.valueOf(ocorrenciaSelecionada.toString()
-										+ " id: "
-										+ ocorrenciaSelecionada.getId()),
-								Toast.LENGTH_SHORT).show();
+//						Toast.makeText(
+//								ListaOcorrenciaActivity.this,
+//								String.valueOf(ocorrenciaSelecionada.toString()
+//										+ " id: "
+//										+ ocorrenciaSelecionada.getId()),
+//								Toast.LENGTH_SHORT).show();
 
 						if (ocorrenciaSelecionada.getStatus().equals("Criada")) {
 							Intent intentRegistroOcorrenciaSucesso = new Intent(

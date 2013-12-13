@@ -64,6 +64,7 @@ public class ListaMinhasOcorrenciasActivity extends ListActivity {
 				} while (c.moveToNext());
 			}
 		}
+		c.close();
 
 		// mAdapter = new ArrayAdapter<Ocorrencia>(this,
 		// android.R.layout.simple_list_item_1, listaOcorrencias);
@@ -119,7 +120,8 @@ public class ListaMinhasOcorrenciasActivity extends ListActivity {
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
 			// String URL =
 			// "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
-			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaSuasOcorrencias";
+//			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaSuasOcorrencias";
+			String URL = "http://chameozelador.herokuapp.com/chameozelador/ocorrencia/listaSuasOcorrencias";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
@@ -180,6 +182,8 @@ public class ListaMinhasOcorrenciasActivity extends ListActivity {
 
 		private void setOcorrencias(String jsonString) {
 			try {
+				Log.i(mTag, jsonString);
+				
 				JSONArray listaOcorrenciasJSON = new JSONArray(jsonString);
 				JSONObject ocorrenciaJSON;
 
@@ -250,12 +254,12 @@ public class ListaMinhasOcorrenciasActivity extends ListActivity {
 						Ocorrencia ocorrenciaSelecionada = mAdapter
 								.getItem(position);
 
-						Toast.makeText(
-								ListaMinhasOcorrenciasActivity.this,
-								String.valueOf(ocorrenciaSelecionada.toString()
-										+ " id: "
-										+ ocorrenciaSelecionada.getId()),
-								Toast.LENGTH_SHORT).show();
+//						Toast.makeText(
+//								ListaMinhasOcorrenciasActivity.this,
+//								String.valueOf(ocorrenciaSelecionada.toString()
+//										+ " id: "
+//										+ ocorrenciaSelecionada.getId()),
+//								Toast.LENGTH_SHORT).show();
 
 						if (ocorrenciaSelecionada.getStatus().equals("Criada")) {
 							Intent intentRegistroOcorrenciaSucesso = new Intent(

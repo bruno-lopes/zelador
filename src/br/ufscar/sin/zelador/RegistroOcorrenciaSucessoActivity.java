@@ -156,23 +156,29 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 					return;
 				}
 				
-				if (mLocation == null) {
-					Toast.makeText(
-							mContext,
-							"Nao e possivel enviar a ocorrencia sem informacoes de localizacao",
-							Toast.LENGTH_LONG).show();
-					return;
-				}
+				
 				
 				
 				ContentValues content = new ContentValues();
+				
+				if (mLocation == null) {
+					Toast.makeText(
+							mContext,
+							"Sem informacoes de localizacao. Enviando com localização padrão",
+							Toast.LENGTH_LONG).show();
+					content.put("latitude", -21.978524f);
+					content.put("longitude", -47.879861f);
+//					return;
+				}
+				else{
 				content.put("latitude", mLocation.getLatitude());
 				content.put("longitude", mLocation.getLongitude());
-				
+				}
 				ByteArrayOutputStream stream = new ByteArrayOutputStream();
 				mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
 				byte[] fotografia = stream.toByteArray();
 				
+				Log.i(mTag, "Fotografia: " + mOcorrenciaId);
 				
 				content.put("fotografia", fotografia);
 				Log.i(mTag, "Valor do mOcorrenciaId: " + mOcorrenciaId);
@@ -189,6 +195,7 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 
 					}
 				}
+				c.close();
 				Log.i(mTag, "Valor do ocorrencia: " + ocorrencia.toString());
 
 				// consulta.execute("London,uk");
@@ -288,6 +295,10 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 									.toString(), e.getLocalizedMessage());
 						}
 					}
+					else{
+						Log.i(RegistroOcorrenciaSucessoActivity.class
+								.toString(), "Não onseguiu abrir o arquivo!!");
+					}
 					mImageView.setImageBitmap(mImageBitmap);
 					Log.i(mTag, "Nao conseguiu abrir o arquivo!!");
 
@@ -349,7 +360,8 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			Boolean erro = true;
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
 //			String URL = "http://chameozelador.herokuapp.com/ocorrencia/inserir";
-			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/inserir";
+//			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/inserir";
+			String URL = "http://chameozelador.herokuapp.com/ocorrencia/inserir";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
