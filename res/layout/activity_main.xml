@@ -31,16 +31,18 @@
             android:text="@string/registrarOcorrenciasButtonLabel" />
 
         <Button
-            android:id="@+id/listaMinhasOcorrenciasButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/minhas_ocorrencias_button_label" />
-
-        <Button
             android:id="@+id/verSituacaoAtualButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/verSituacaoAtualButtonLabel" />
+
+        <Button
+            android:id="@+id/listaMinhasOcorrenciasButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/minhas_ocorrencias_button_label"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>
