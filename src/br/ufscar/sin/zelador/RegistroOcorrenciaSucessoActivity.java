@@ -348,7 +348,8 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 			String linha = "";
 			Boolean erro = true;
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
-			String URL = "http://chameozelador.herokuapp.com/ocorrencia/inserir";
+//			String URL = "http://chameozelador.herokuapp.com/ocorrencia/inserir";
+			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/inserir";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
@@ -356,9 +357,13 @@ public class RegistroOcorrenciaSucessoActivity extends Activity {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost post = new HttpPost(URL);
 				StringEntity se = new StringEntity(jsonObject.toString());
+				
+				
 				se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
 						"application/json"));
 				post.setEntity(se);
+				Log.i(TarefaInsercaoOcorrencia.class.toString(),
+						"Tentando postar!!!");
 				HttpResponse resposta = client.execute(post);
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						resposta.getEntity().getContent()));

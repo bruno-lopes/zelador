@@ -108,7 +108,8 @@ public class ListaOcorrenciaActivity extends ListActivity {
 			String linha = "";
 			Boolean erro = true;
 			// "http://localhost:8080/chameozelador/ocorrencia/index?format=";
-			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
+//			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
+			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaOcorrencias";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {
@@ -145,8 +146,6 @@ public class ListaOcorrenciaActivity extends ListActivity {
 
 		private void setResposta(String jsonString) {
 			jsonString.replaceAll(" ", "");
-			Log.i(mTag, jsonString);
-			Log.i(mTag, "ADFFF");
 			try {
 				// new
 				// JSONArray("['mensagem':'Ocorrencia inserida com sucesso!', 'ocorrencia':{\"class\":\"br.ufscar.chameozelador.Ocorrencia\",\"id\":4,\"categoria\":\"value1\",\"denunciante\":\"afff\"}]");
@@ -177,12 +176,7 @@ public class ListaOcorrenciaActivity extends ListActivity {
 				for (int i = 0; i < listaOcorrenciasJSON.length(); i++) {
 					ocorrenciaJSON = new JSONObject(
 							listaOcorrenciasJSON.getString(i));
-					Ocorrencia ocorrencia = new Ocorrencia();
-					ocorrencia.setCategoria(ocorrenciaJSON
-							.getString("categoria"));
-					ocorrencia.setDenunciante(ocorrenciaJSON
-							.getString("denunciante"));
-
+					Ocorrencia ocorrencia = new Ocorrencia(ocorrenciaJSON);
 					listaOcorrencias.add(ocorrencia);
 					Log.i(mTag, "Adicionando ocorrencia");
 				}
@@ -265,10 +259,14 @@ public class ListaOcorrenciaActivity extends ListActivity {
 							Intent intentMostraOcorrencia = new Intent(
 									ListaOcorrenciaActivity.this,
 									MostraOcorrenciaActivity.class);
+//							intentMostraOcorrencia
+//									.putExtra(
+//											MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
+//											ocorrenciaSelecionada.getId());
 							intentMostraOcorrencia
-									.putExtra(
-											MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
-											ocorrenciaSelecionada.getId());
+							.putExtra(
+									MostraOcorrenciaActivity.PARAMETRO_ID_OCORRENCIA,
+									ocorrenciaSelecionada);
 							startActivity(intentMostraOcorrencia);
 						}
 					}

@@ -1,15 +1,27 @@
 package br.ufscar.sin.entidades;
 
-import java.io.UnsupportedEncodingException;
+import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.database.Cursor;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Ocorrencia {
+import android.database.Cursor;
+import android.util.Base64;
+import android.util.Base64OutputStream;
+import android.util.Log;
+
+public class Ocorrencia implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String detalhamento;
 	private String denunciante;
@@ -40,6 +52,41 @@ public class Ocorrencia {
 		longitude = c.getDouble(8);
 		fotografia = c.getBlob(9);
 		id = c.getLong(c.getColumnIndex("id"));
+	}
+
+	public Ocorrencia(JSONObject ocorrenciaJSON) {
+		try {
+			categoria = ocorrenciaJSON.getString("categoria");
+
+			detalhamento = ocorrenciaJSON.getString("detalhamento");
+			denunciante = ocorrenciaJSON.getString("denunciante");
+			gravidade = ocorrenciaJSON.getInt("gravidade");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			// SimpleDateFormat sdf = new
+			// SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+
+			try {
+				dataHora = sdf.parse(ocorrenciaJSON.getString("dataHora"));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			status = ocorrenciaJSON.getString("status");
+			latitude = ocorrenciaJSON.getDouble("latitude");
+			longitude = ocorrenciaJSON.getDouble("longitude");
+			byte[] array = new byte[ocorrenciaJSON.getJSONArray("fotografia")
+					.length()];
+
+			for (int i = 0; i < ocorrenciaJSON.getJSONArray("fotografia")
+					.length(); i++) {
+				array[i] = (byte) ocorrenciaJSON.getJSONArray("fotografia")
+						.getInt(i);
+			}
+			fotografia = array;
+			id = ocorrenciaJSON.getLong("id");
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	public Long getId() {
@@ -143,15 +190,12 @@ public class Ocorrencia {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 		map.put("dataHora", sdf.format(dataHora));
+//		Log.i("", Arrays.toString(fotografia));
 		
-//		try {
-			map.put("fotografia",new String (fotografia));//, "UTF-8"
-//		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-				
-				//Base64.encodeToString(fotografia, Base64.DEFAULT));
+//		map.put("fotografia", /*fotografia);*/Base64.encodeToString(fotografia, Base64.DEFAULT));//Arrays.toString(fotografia));
+//		map.put("fotografia", new String (fotografia, Charset.forNamemap.put("fotografia", ("UTF-8")));
+		map.put("fotografia",  Base64.encodeToString(fotografia, Base64.DEFAULT));
+//		map.put("fotografia",  Base64.encode(fotografia, Base64.DEFAULT));
 		map.put("latitude", latitude.toString());
 		map.put("longitude", longitude.toString());
 		map.put("status", status);
