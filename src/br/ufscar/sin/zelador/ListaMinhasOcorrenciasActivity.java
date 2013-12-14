@@ -121,7 +121,7 @@ public class ListaMinhasOcorrenciasActivity extends ListActivity {
 			// String URL =
 			// "http://chameozelador.herokuapp.com/ocorrencia/listaOcorrencias";
 //			String URL = "http://192.168.0.182:8080/chameozelador/ocorrencia/listaSuasOcorrencias";
-			String URL = "http://chameozelador.herokuapp.com/chameozelador/ocorrencia/listaSuasOcorrencias";
+			String URL = "http://chameozelador.herokuapp.com/ocorrencia/listaSuasOcorrencias";
 			final String tag = "Your Logcat tag: ";
 
 			// if (params.length > 0) {

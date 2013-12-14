@@ -213,7 +213,7 @@ containing a value of this type.
         public static final int hybrid=0x7f050004;
         public static final int imageView1=0x7f05000e;
         public static final int image_status=0x7f050021;
-        public static final int listaMinhasOcorrenciasButton=0x7f050009;
+        public static final int listaMinhasOcorrenciasButton=0x7f05000a;
         public static final int map=0x7f05000b;
         public static final int mensagemSucessoTextView=0x7f05001a;
         public static final int mostraCategoriaTextView=0x7f05000c;
@@ -229,7 +229,7 @@ containing a value of this type.
         public static final int terrain=0x7f050003;
         public static final int text=0x7f05001f;
         public static final int tirarFotoButton=0x7f05001d;
-        public static final int verSituacaoAtualButton=0x7f05000a;
+        public static final int verSituacaoAtualButton=0x7f050009;
         public static final int voltarInicioButton=0x7f05001c;
     }
     public static final class layout {
